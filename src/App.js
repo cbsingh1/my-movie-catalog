@@ -12,9 +12,7 @@ const KEY = "3e421811";
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-
   const { movies, isLoading, error } = useMovies(query, handleCloseMovie);
-
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie(id) {
@@ -95,13 +93,19 @@ function Logo() {
   return (
     <div className="logo">
       <span role="img">🍿</span>
-      <h1>My Movie Catalog</h1>
+      <h1>
+        <i>myMovies</i>
+      </h1>
     </div>
   );
 }
 
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
+
+  useEffect(function () {
+    inputEl.current.focus();
+  }, []);
 
   useKey("Enter", function () {
     if (document.activeElement === inputEl.current) return;
@@ -255,7 +259,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       document.title = `Movie | ${title}`;
 
       return function () {
-        document.title = "My Movie Catalog";
+        document.title = "myMovies";
       };
     },
     [title]
